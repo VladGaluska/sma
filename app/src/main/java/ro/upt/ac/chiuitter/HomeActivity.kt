@@ -2,7 +2,10 @@ package ro.upt.ac.chiuitter
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class HomeActivity : AppCompatActivity() {
@@ -10,6 +13,8 @@ class HomeActivity : AppCompatActivity() {
     private val dummyChiuitStore = DummyChiuitStore()
 
     private lateinit var listAdapter: ChiuitRecyclerViewAdapter
+
+    private var chiuits: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +35,9 @@ class HomeActivity : AppCompatActivity() {
      */
     private fun shareChiuit(text: String) {
         val sendIntent = Intent().apply {
-            // TODO 1: Configure to support text sending/sharing and then attach the text as intent's extra.
-
-
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
         }
 
         val intentChooser = Intent.createChooser(sendIntent, "")
@@ -44,12 +49,10 @@ class HomeActivity : AppCompatActivity() {
     Defines an *explicit* intent which will be used to start ComposeActivity.
      */
     private fun composeChiuit() {
-        // TODO 2: Create an explicit intent which points to ComposeActivity.
+        val intent = Intent(this, ComposeActivity::class.java)
 
-
-        // TODO 3: Start a new activity with the previously defined intent.
         // We start a new activity that we expect to return the acquired text as the result.
-
+        startActivityForResult(intent, 1213)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -61,11 +64,13 @@ class HomeActivity : AppCompatActivity() {
 
     private fun extractText(data: Intent?) {
         data?.let {
-            // TODO 5: Extract the text from result intent.
+            val text = it.getStringExtra(ComposeActivity.EXTRA_TEXT)
 
-
-            // TODO 6: Check if text is not null or empty, then set the new "chiuit" content.
-
+            if (!text.isNullOrEmpty()) {
+                findViewById<TextView>(R.id.txv_content).apply{
+                    this.text = text
+                }
+            }
 
             TODO("13. Instantiate a new chiuit object that add it to the adapter")
         }
