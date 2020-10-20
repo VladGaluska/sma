@@ -7,6 +7,10 @@ import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.view_home.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -19,6 +23,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.view_home)
+        fab_add.setOnClickListener {composeChiuit()}
 
         initList()
     }
@@ -26,7 +31,15 @@ class HomeActivity : AppCompatActivity() {
     private fun initList() {
         val chiuitList = dummyChiuitStore.getAllData()
 
-        TODO("7. Instantiate the adapter, then setup the recycler view list")
+        listAdapter = ChiuitRecyclerViewAdapter(chiuitList = chiuitList.toMutableList(),
+                onClick = fun(chiuit: Chiuit) {
+                    shareChiuit(chiuit.description)
+                })
+        val manager = LinearLayoutManager(this)
+        findViewById<RecyclerView>(R.id.rv_chiuit_list).apply {
+            layoutManager = manager
+            adapter = listAdapter
+        }
     }
 
     /*
@@ -67,12 +80,9 @@ class HomeActivity : AppCompatActivity() {
             val text = it.getStringExtra(ComposeActivity.EXTRA_TEXT)
 
             if (!text.isNullOrEmpty()) {
-                findViewById<TextView>(R.id.txv_content).apply{
-                    this.text = text
-                }
+                listAdapter.addItem(Chiuit(text))
             }
 
-            TODO("13. Instantiate a new chiuit object that add it to the adapter")
         }
     }
 
