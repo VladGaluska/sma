@@ -1,7 +1,10 @@
 package ro.upt.ac.chiuitter.data.database
 
 import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.Query
+import ro.upt.ac.chiuitter.domain.Chiuit
 
 
 @Dao
@@ -11,10 +14,11 @@ interface ChiuitDao {
     fun getAll(): List<ChiuitEntity>
 
 
-    // TODO("Define insert")
+    @Insert
+    fun insertChiuit(chiuit: ChiuitEntity)
 
 
-    // TODO("Define delete")
-
+    @Delete
+    fun deleteChiuit(chiuit: ChiuitEntity)
 
 }

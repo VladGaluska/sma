@@ -10,11 +10,11 @@ class ChiuitDbStore(private val appDatabase: AppDatabase) : ChiuitRepository {
     }
 
     override fun addChiuit(chiuit: Chiuit) {
-        TODO ("Insert the new entry")
+        appDatabase.chiuitDao().insertChiuit(chiuit.toDbModel())
     }
 
     override fun removeChiuit(chiuit: Chiuit) {
-        TODO ("Insert the specified entry")
+        appDatabase.chiuitDao().deleteChiuit(chiuit.toDbModel())
     }
 
 

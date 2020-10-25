@@ -29,7 +29,14 @@
       android:background="@android:color/transparent"
       android:src="@drawable/ic_send"/>
 
-     <!--TODO: Add a new button for delete action-->
+    <ImageButton
+        android:id="@+id/ibt_delete"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:src="@android:drawable/ic_menu_delete" />
+
 
   </LinearLayout>
 
