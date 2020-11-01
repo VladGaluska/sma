@@ -27,6 +27,7 @@ android {
 dependencies {
     def lifecycle_version = "2.0.0"
     def room_version = "1.1.1"
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -42,6 +43,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-database:16.0.3'
+    implementation 'com.google.firebase:firebase-analytics'
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
 }

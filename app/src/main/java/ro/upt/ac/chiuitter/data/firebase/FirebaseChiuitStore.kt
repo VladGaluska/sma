@@ -26,7 +26,9 @@ class FirebaseChiuitStore : ChiuitRepository {
 
                 val children = p0.children
 
-                TODO ("Iterate through the children and get the node value")
+                children.forEach {
+                    values.add(it.getValue(ChiuitNode::class.java)!!)
+                }
 
                 database.removeEventListener(this)
 
@@ -37,9 +39,11 @@ class FirebaseChiuitStore : ChiuitRepository {
     }
 
     override suspend fun addChiuit(chiuit: Chiuit): Unit = suspendCoroutine { continuation ->
-        TODO ("Insert the object into database - don't forget to use the right model")
 
-        TODO ("Make sure the continuation is called")
+        database.push().setValue(chiuit.toFirebaseModel())
+
+        continuation.resumeWith(Result.success(Unit))
+
     }
 
     override suspend fun removeChiuit(chiuit: Chiuit) : Unit = suspendCoroutine { continuation ->
@@ -53,14 +57,18 @@ class FirebaseChiuitStore : ChiuitRepository {
                 val children = p0.children
 
 
-                TODO ("Iterate through the children and find the matching node, then perform removal.")
                 for (child in children) {
-
+                    val node = child.getValue(ChiuitNode::class.java)
+                    node?.let {
+                        if (it.timestamp == chiuit.timestamp && it.description == chiuit.description) {
+                            child.ref.removeValue()
+                        }
+                    }
                 }
 
                 database.removeEventListener(this)
 
-                TODO ("Make sure the continuation is called")
+                continuation.resumeWith(Result.success(Unit))
             }
 
         })
