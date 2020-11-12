@@ -6,16 +6,15 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import androidx.core.content.ContextCompat.getSystemService
 import ro.upt.sma.heart.model.HeartSensorRepository
 import java.util.*
 
 class HeartSensorDataStore(context: Context) : HeartSensorRepository {
 
-    // TODO ("Get sensor manager service")
-    private val sensorManager: SensorManager? = null
+    private val sensorManager: SensorManager? = getSystemService(context, SensorManager::class.java)
 
-    // TODO ("Get a handle for the sensor")
-    private val heartRateSensor: Sensor? = null
+    private val heartRateSensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_HEART_RATE)
 
     private val listeners = HashMap<HeartSensorRepository.HeartRateListener, SensorEventListener>()
 
@@ -32,8 +31,7 @@ class HeartSensorDataStore(context: Context) : HeartSensorRepository {
             override fun onAccuracyChanged(sensor: Sensor, i: Int) {}
         }
 
-        TODO("Register sensor event listener with the sensor manager API")
-
+        sensorManager?.registerListener(eventListener, heartRateSensor, 1);
 
         listeners[listener] = eventListener
     }

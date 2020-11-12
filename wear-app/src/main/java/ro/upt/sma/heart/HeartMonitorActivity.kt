@@ -63,7 +63,7 @@ class HeartMonitorActivity : WearableActivity() , HeartMonitorView {
     }
 
     override fun showLastMeasurement(heartMeasurement: HeartMeasurement) {
-        TODO("Set heart textview value")
+        tv_heart_value.text = heartMeasurement.value.toString()
     }
 
 }
