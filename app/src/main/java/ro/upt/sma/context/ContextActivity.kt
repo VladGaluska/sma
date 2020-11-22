@@ -17,11 +17,15 @@ import android.widget.Toast
 import com.google.android.gms.location.DetectedActivity
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import java.text.MessageFormat
 import ro.upt.sma.context.activity.ActivityRecognitionHandler
+import ro.upt.sma.context.activity.ActivityRecognitionService
 import ro.upt.sma.context.location.LocationHandler
 
 class ContextActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -119,22 +123,23 @@ class ContextActivity : AppCompatActivity(), OnMapReadyCallback {
 
         this.activityRecognitionReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                // TODO 6: Extract activity type from intent extras and pass it to updateActivityCard method.
-                // Take a look at ActivityRecognitionService to see how intent extras are formed.
+
+                updateActivityCard(intent.extras?.get(ActivityRecognitionService.ACTIVITY_EXTRA) as Int)
 
             }
         }
 
-        // TODO 7: Register created receiver only for ActivityRecognitionService.INTENT_ACTION.
-        registerReceiver(activityRecognitionReceiver, IntentFilter())
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(ActivityRecognitionService.INTENT_ACTION)
+        registerReceiver(activityRecognitionReceiver, intentFilter)
     }
 
     private fun updateMap(location: Location) {
-        if (googleMap != null) {
-            // TODO 3: Clear current marker and create a new marker based on the received location object.
-
-            // TODO 4: Use CameraUpdateFactory to perform a zoom in.
-
+        googleMap?.let{
+            it.clear()
+            val latLng = LatLng(location.latitude, location.longitude)
+            it.addMarker(MarkerOptions().position(latLng).title("My marker"))
+            it.moveCamera(CameraUpdateFactory.newLatLng(latLng))
         }
     }
 

@@ -2,6 +2,7 @@ package ro.upt.sma.context.activity
 
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.ActivityRecognitionClient
 
@@ -11,9 +12,14 @@ class ActivityRecognitionHandler(context: Context) {
 
     fun registerPendingIntent(): PendingIntent {
 
-        // TODO 5: Create a pending intent for ActivityRecognitionService and register for updates to activity recognition client.
+        val intent = Intent(ActivityRecognitionService::class.java);
 
-        return null!!
+        val pendingIntent = PendingIntent(intent)
+
+        client.requestActivityUpdates(1, pendingIntent)
+
+        return pendingIntent
+
     }
 
     fun unregisterPendingIntent(pendingIntent: PendingIntent) {
